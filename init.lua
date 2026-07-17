@@ -36,11 +36,12 @@ vim.opt.updatetime = 250
 vim.opt.clipboard = "unnamedplus"
 
 -- Detect system dark/light theme (GNOME/GTK)
+-- color-scheme has three values: 'prefer-dark', 'prefer-light', 'default'.
+-- Only treat an explicit light preference as light; 'default'/no-preference
+-- and any failure fall back to dark.
 local function detect_background()
   local result = vim.fn.system("gsettings get org.gnome.desktop.interface color-scheme 2>/dev/null")
-  if vim.v.shell_error == 0 and result:match("prefer%-dark") then
-    return "dark"
-  elseif vim.v.shell_error == 0 then
+  if vim.v.shell_error == 0 and result:match("prefer%-light") then
     return "light"
   end
   return "dark"
